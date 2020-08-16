@@ -54,7 +54,9 @@ const DishDetail = (props) => {
                     <div className="col-12 col-md-5 m-1">
                         <h4><b>Comments</b></h4>
                         {renderComments(comment)}
-                        <CommentForm />
+                        
+                        <CommentForm addComment={props.addComment}
+                        dishId={dish.id}/>
                     </div>
                 </div>
             </div>
@@ -91,6 +93,7 @@ class CommentForm extends Component {
     }
     handleSubmit(values) {
         alert("Current State is: " + JSON.stringify(values));
+        this.props.addComment(this.props.dishId,values.rating,values.author,values.comment)
     }
 
     render() {

@@ -76,7 +76,7 @@ const DishDetail = (props) => {
                         <h4><b>Comments</b></h4>
                         {renderComments(comment)}
                         
-                        <CommentForm addComment={props.addComment}
+                        <CommentForm postComment={props.postComment}
                         dishId={dish.id}/>
                     </div>
                 </div>
@@ -114,7 +114,7 @@ class CommentForm extends Component {
     }
     handleSubmit(values) {
         alert("Current State is: " + JSON.stringify(values));
-        this.props.addComment(this.props.dishId,values.rating,values.author,values.comment)
+        this.props.postComment(this.props.dishId,values.rating,values.author,values.comment)
     }
 
     render() {

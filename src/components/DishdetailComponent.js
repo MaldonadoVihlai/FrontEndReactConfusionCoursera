@@ -4,6 +4,7 @@ import { Modal, ModalHeader, ModalBody, Row, Label, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
+import {baseUrl} from '../shared/baseUrl';
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const required = (val) => val && val.length;
@@ -64,7 +65,7 @@ const DishDetail = (props) => {
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
                         <Card>
-                            <CardImg width="100%" src={dish.image} alt={dish.name} />
+                            <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
                             <CardBody>
                                 <CardTitle id='header'><b>{dish.name}</b></CardTitle>
                                 <CardText>{dish.description}</CardText>

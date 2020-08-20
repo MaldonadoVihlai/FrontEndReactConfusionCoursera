@@ -4,7 +4,8 @@ import { Modal, ModalHeader, ModalBody, Row, Label, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
-import {baseUrl} from '../shared/baseUrl';
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const required = (val) => val && val.length;
@@ -18,36 +19,40 @@ function getFormatDate(date) {
 }
 
 function renderComments(comments) {
+
     let commentList;
+
     commentList = comments.map((commentl) => <ul className="list-unstyled">
-        <li>{commentl.comment}</li>
-        <li>-- {commentl.author}, {getFormatDate(commentl.date)}</li>
-    </ul>);
+        <Fade in>
+            <li>{commentl.comment}</li>
+            <li>-- {commentl.author}, {getFormatDate(commentl.date)}</li>
+            </Fade>
+    </ul>);        
     return commentList;
 }
 const DishDetail = (props) => {
     console.log(props.selectdDish);
-    
+
 
     if (props.isLoading) {
-        return(
+        return (
             <div className="container">
-                <div className="row">            
+                <div className="row">
                     <Loading />
                 </div>
             </div>
         );
     }
     else if (props.errMess) {
-        return(
+        return (
             <div className="container">
-                <div className="row">            
+                <div className="row">
                     <h4>{props.errMess}</h4>
                 </div>
             </div>
         );
     }
-    else if (props.dish != null)  {
+    else if (props.dish != null) {
         const dish = props.dish;
         const comment = Array.from(props.comments);
         return (
@@ -64,20 +69,26 @@ const DishDetail = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        <Card>
-                            <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
-                            <CardBody>
-                                <CardTitle id='header'><b>{dish.name}</b></CardTitle>
-                                <CardText>{dish.description}</CardText>
-                            </CardBody>
-                        </Card>
+                        <FadeTransform in
+                            transformProps={{
+                                exitTransform: 'scale(0.5) translateY(-50%)'
+                            }}>
+                            <Card>
+                                <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+                                <CardBody>
+                                    <CardTitle id='header'><b>{dish.name}</b></CardTitle>
+                                    <CardText>{dish.description}</CardText>
+                                </CardBody>
+                            </Card>
+                        </FadeTransform>
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <h4><b>Comments</b></h4>
-                        {renderComments(comment)}
-                        
+                        <Stagger in>
+                            <h4><b>Comments</b></h4>
+                            {renderComments(comment)}
+                        </Stagger>
                         <CommentForm postComment={props.postComment}
-                        dishId={dish.id}/>
+                            dishId={dish.id} />
                     </div>
                 </div>
             </div>
@@ -114,7 +125,7 @@ class CommentForm extends Component {
     }
     handleSubmit(values) {
         alert("Current State is: " + JSON.stringify(values));
-        this.props.postComment(this.props.dishId,values.rating,values.author,values.comment)
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment)
     }
 
     render() {
